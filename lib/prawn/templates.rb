@@ -188,7 +188,11 @@ module Prawn
         if obj.data[:Type] == :Page
           obj.identifier
         elsif obj.data[:Type] == :Pages
-          obj.data[:Kids].map { |kid| get_page_objects(kid) }
+          kids = obj.data[:Kids]
+          if kids.is_a?(PDF::Core::Reference)
+            kids = kids.data
+          end
+          kids.map { |kid| get_page_objects(kid) }
         end
       end
 
